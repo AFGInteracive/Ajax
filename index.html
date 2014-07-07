@@ -1,0 +1,63 @@
+<!-- This must be tested in Safari on Mamp -->
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script>
+	$(document).ready(function() {
+
+		$('#clicker').on('click', function(e){
+			e.preventDefault();
+			/*.ajax has many properties*/
+			$.ajax('ext.txt', {
+				success: function winner(response) {
+					$('#content').html(response).slideDown();
+					return response;
+				},
+				error : function(request, errorType, errorMessage){
+					alert('Error: ' + errorType + ' with message: ' + errorMessage);
+				},
+				timeout : 20000 ,
+				beforeSend : function() { alert('Wait');
+				},
+				/*complete : function() { alert('Done');
+				},*/
+				data : { 'confNum' : 3433 },
+				data : { 'confNum': $('#content').data('confNum') }
+			});
+
+
+			/*Get onlt has 2 properties*/
+			/*$.get('ext/info.html?confNum=3433', function(response) {
+					$('#loadget').html(response).slideToggle();
+			});*/
+		setTimeout(function() {
+				if(winner() == 'red') {
+					$('#content').fadeOut();
+				}
+		}, 5000);
+		
+		});
+
+	});
+	/*must use event delegation in external content*/
+
+
+	</script>
+
+	<style type="text/css">
+	#content, #loadget {
+		display: none;
+	}
+	</style>
+</head>
+<body>
+
+<a href="#" id="clicker">click me</a>
+
+<div id="content"><p>Existing content</p></div>
+<div id="loadget" data-confNum="3333"></div>
+
+	
+</html>
